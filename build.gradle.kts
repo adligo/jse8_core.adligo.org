@@ -56,6 +56,9 @@ java {
     languageVersion.set(JavaLanguageVersion.of(8))
   }
 }
+fun dependsOnBytes(dhs: DependencyHandlerScope) {
+   dhs.implementation(project("bytes.adligo.org"))
+}
  
 fun dependsOnCtx(dhs: DependencyHandlerScope) {
    dependsOnI_Ctx4Jse(dhs)
@@ -63,6 +66,10 @@ fun dependsOnCtx(dhs: DependencyHandlerScope) {
    dhs.implementation(project("ctx.adligo.org"))
 }
 
+fun dependsOnGwt(dhs: DependencyHandlerScope) {
+  dhs.implementation("com.google.gwt:gwt-user:2.9.0")
+  dhs.implementation("com.google.gwt:gwt-dev:2.9.0")
+}
 
 fun dependsOnI_Ctx(dhs: DependencyHandlerScope) {
    dhs.implementation(project("i_ctx.adligo.org"))
@@ -145,15 +152,52 @@ fun onEclipseClasspathMerged(classpath: Classpath) {
   	 //println("${entry::class.qualifiedName}")  
      //r 
   }
-  //added by Gradle for me, yea
-  //classpath.entries.add(Container(
-  //   "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre-8"))
+  classpath.entries.add(Container(
+     "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre-8"))
   
   //println("${classpath.entries::class.qualifiedName}")  
 }
 
 fun testSrc(ssc: SourceSetContainer) {
   ssc.test { java { srcDirs("src") } }
+}
+
+project(":bytes.adligo.org") {
+  allPlugins(this)
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
+}
+
+project(":bytes_gwt_examples.adligo.org") {
+  allPlugins(this)
+  dependencies {
+    dependsOnBytes(this)
+    dependsOnGwt(this)
+  }
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
+}
+
+project(":bytes_tests.adligo.org") {
+  allPlugins(this)
+  dependencies {
+    dependsOnBytes(this)
+    dependsOnTests4j4jj(this)
+  }
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
 }
 
 project(":ctx.adligo.org") {
@@ -174,8 +218,7 @@ project(":ctx_gwt_examples.adligo.org") {
   allPlugins(this)
   dependencies {
     dependsOnCtx(this)
-    implementation("com.google.gwt:gwt-user:2.9.0")
-    implementation("com.google.gwt:gwt-dev:2.9.0")
+    dependsOnGwt(this)
   }
   eclipse { 
     onEclipse(this)
