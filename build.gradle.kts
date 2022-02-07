@@ -101,6 +101,11 @@ fun dependsOnJaxb(dhs: DependencyHandlerScope) {
   dhs.implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359") 
 }
 
+fun dependsOnTen(dhs: DependencyHandlerScope) {
+  dependsOnBytes(dhs)
+  dhs.implementation(project("ten.adligo.org"))
+}
+
 fun dependsOnTests4j4jj(dhs: DependencyHandlerScope) {
   dependsOnI_Tests4j(dhs)
   dependsOnJUnit5(dhs)
@@ -153,7 +158,7 @@ fun onEclipseClasspathMerged(classpath: Classpath) {
      //r 
   }
   classpath.entries.add(Container(
-     "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre-8"))
+     "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-8"))
   
   //println("${classpath.entries::class.qualifiedName}")  
 }
@@ -348,6 +353,48 @@ project(":pipe_tests.adligo.org") {
   allPlugins(this)
   dependencies {
     dependsOnPipe(this)
+  }
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
+}
+
+
+project(":ten.adligo.org") {
+  allPlugins(this)
+  dependencies {
+    dependsOnBytes(this)
+  }
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
+}
+
+project(":ten_gwt_examples.adligo.org") {
+  allPlugins(this)
+  dependencies {
+    dependsOnTen(this)
+    dependsOnGwt(this)
+  }
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
+}
+
+project(":ten_tests.adligo.org") {
+  allPlugins(this)
+  dependencies {
+    dependsOnTen(this)
+    dependsOnTests4j4jj(this)
   }
   eclipse { 
     onEclipse(this)
