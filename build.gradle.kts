@@ -57,7 +57,8 @@ java {
   }
 }
 fun dependsOnBytes(dhs: DependencyHandlerScope) {
-   dhs.implementation(project("bytes.adligo.org"))
+  dependsOnI_Bytes(dhs)
+  dhs.implementation(project("bytes.adligo.org"))
 }
  
 fun dependsOnCtx(dhs: DependencyHandlerScope) {
@@ -69,6 +70,10 @@ fun dependsOnCtx(dhs: DependencyHandlerScope) {
 fun dependsOnGwt(dhs: DependencyHandlerScope) {
   dhs.implementation("com.google.gwt:gwt-user:2.9.0")
   dhs.implementation("com.google.gwt:gwt-dev:2.9.0")
+}
+
+fun dependsOnI_Bytes(dhs: DependencyHandlerScope) {
+   dhs.implementation(project("i_bytes.adligo.org"))
 }
 
 fun dependsOnI_Ctx(dhs: DependencyHandlerScope) {
@@ -169,6 +174,9 @@ fun testSrc(ssc: SourceSetContainer) {
 
 project(":bytes.adligo.org") {
   allPlugins(this)
+  dependencies {
+    dependsOnI_Bytes(this)
+  }
   eclipse { 
     onEclipse(this)
   }
@@ -249,6 +257,16 @@ project(":ctx_tests.adligo.org") {
 
 
 project(":i_ctx.adligo.org") {
+  allPlugins(this)
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
+}
+
+project(":i_bytes.adligo.org") {
   allPlugins(this)
   eclipse { 
     onEclipse(this)

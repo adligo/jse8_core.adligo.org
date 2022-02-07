@@ -69,7 +69,7 @@ clone git@github.com:adligo/eclipse.adligo.org.git
 
 clone git@github.com:adligo/gradle_kt_examples.adligo.org.git
 
-
+clone git@github.com:adligo/i_bytes.adligo.org.git
 clone git@github.com:adligo/i_ctx.adligo.org.git
 clone git@github.com:adligo/i_ctx4jse.adligo.org.git
 clone git@github.com:adligo/i_pipe.adligo.org.git
