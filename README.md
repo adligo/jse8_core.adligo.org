@@ -25,7 +25,9 @@ Note Adligo uses the following project names (there MUST NOT be any spaces in th
 Both Builds consist of two simple steps;
 1) Execute Shell
 2) Post Build Action / Publish JUnit test result report 
+```
 -depot/tests/*.xml
+```
 
 ## Parallel Build Execute Shell Step
 ```
