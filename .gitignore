@@ -36,6 +36,10 @@ bytes.adligo.org
 bytes_gwt_examples.adligo.org
 bytes_tests.adligo.org
 
+collections.adligo.org
+collections_tests.adligo.org
+collections_gwt_examples.adligo.org
+
 ctx.adligo.org
 ctx_gwt_examples.adligo.org
 ctx_tests.adligo.org
@@ -45,6 +49,7 @@ eclipse.adligo.org
 gradle_kt_examples.adligo.org
 
 i_bytes.adligo.org
+i_collections.adligo.org
 i_ctx.adligo.org
 i_ctx4jse.adligo.org
 i_pipe.adligo.org
