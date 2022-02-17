@@ -76,6 +76,10 @@ fun dependsOnI_Bytes(dhs: DependencyHandlerScope) {
    dhs.implementation(project("i_bytes.adligo.org"))
 }
 
+fun dependsOnI_Collections(dhs: DependencyHandlerScope) {
+   dhs.implementation(project("i_collections.adligo.org"))
+}
+
 fun dependsOnI_Ctx(dhs: DependencyHandlerScope) {
    dhs.implementation(project("i_ctx.adligo.org"))
 }
@@ -213,6 +217,19 @@ project(":bytes_tests.adligo.org") {
   }
 }
 
+project(":collections.adligo.org") {
+  allPlugins(this)
+  dependencies {
+    dependsOnI_Collections(this)
+  }
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
+}
+
 project(":ctx.adligo.org") {
   allPlugins(this)
   dependencies {
@@ -255,6 +272,15 @@ project(":ctx_tests.adligo.org") {
   }
 }
 
+project(":i_collections.adligo.org") {
+  allPlugins(this)
+  eclipse { 
+    onEclipse(this)
+  }
+  repositories {
+    allRepos(this)
+  }
+}
 
 project(":i_ctx.adligo.org") {
   allPlugins(this)
