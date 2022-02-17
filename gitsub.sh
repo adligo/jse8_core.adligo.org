@@ -61,6 +61,9 @@ clone git@github.com:adligo/bytes.adligo.org.git
 clone git@github.com:adligo/bytes_gwt_examples.adligo.org.git
 clone git@github.com:adligo/bytes_tests.adligo.org.git
 
+clone git@github.com:adligo/collections.adligo.org.git
+clone git@github.com:adligo/collections_gwt_examples.adligo.org.git
+clone git@github.com:adligo/collections_tests.adligo.org.git
 clone git@github.com:adligo/ctx.adligo.org.git
 clone git@github.com:adligo/ctx_gwt_examples.adligo.org.git
 clone git@github.com:adligo/ctx_tests.adligo.org.git
@@ -70,6 +73,7 @@ clone git@github.com:adligo/eclipse.adligo.org.git
 clone git@github.com:adligo/gradle_kt_examples.adligo.org.git
 
 clone git@github.com:adligo/i_bytes.adligo.org.git
+clone git@github.com:adligo/i_collections.adligo.org.git
 clone git@github.com:adligo/i_ctx.adligo.org.git
 clone git@github.com:adligo/i_ctx4jse.adligo.org.git
 clone git@github.com:adligo/i_pipe.adligo.org.git
