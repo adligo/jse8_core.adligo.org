@@ -79,7 +79,7 @@ fi
 mkdir $depotDir
 mkdir $depotDir/tests
 
-move_test_xml_files collection_tests.adligo.org 
+move_test_xml_files collections_tests.adligo.org 
 move_test_xml_files ctx_tests.adligo.org 
 move_test_xml_files tests4j4jj_tests.adligo.org
 
