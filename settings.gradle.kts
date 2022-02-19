@@ -1,5 +1,5 @@
 
-rootProject.name = "2022.adligo.org"
+rootProject.name = "jse8-core.adligo.org"
 include(
 "bytes.adligo.org", "bytes_gwt_examples.adligo.org", "bytes_tests.adligo.org",
 "collections.adligo.org","collections_gwt_examples.adligo.org","collections_tests.adligo.org",
