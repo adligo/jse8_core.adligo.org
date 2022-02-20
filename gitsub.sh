@@ -52,50 +52,50 @@ function clone() {
 
 function clone_fun() {
   #echo "cloning $1 async"
-  git clone $1.git
+  git clone git@github.com:adligo/$1.git
   #echo "finished clone of $1"
   cd $1
   git checkout jse8
 }
-clone git@github.com:adligo/artifactory_deploy.sh.adligo.org
+clone artifactory_deploy.sh.adligo.org
 
-clone git@github.com:adligo/bytes.adligo.org
-clone git@github.com:adligo/bytes_gwt_examples.adligo.org
-clone git@github.com:adligo/bytes_tests.adligo.org
+clone bytes.adligo.org
+clone bytes_gwt_examples.adligo.org
+clone bytes_tests.adligo.org
 
-clone git@github.com:adligo/collections.adligo.org
-clone git@github.com:adligo/collections_gwt_examples.adligo.org
-clone git@github.com:adligo/collections_tests.adligo.org
-clone git@github.com:adligo/ctx.adligo.org
-clone git@github.com:adligo/ctx_gwt_examples.adligo.org
-clone git@github.com:adligo/ctx_tests.adligo.org
+clone collections.adligo.org
+clone collections_gwt_examples.adligo.org
+clone collections_tests.adligo.org
+clone ctx.adligo.org
+clone ctx_gwt_examples.adligo.org
+clone ctx_tests.adligo.org
 
-clone git@github.com:adligo/eclipse.adligo.org
+clone eclipse.adligo.org
 
-clone git@github.com:adligo/gradle_kt_examples.adligo.org
+clone gradle_kt_examples.adligo.org
 
-clone git@github.com:adligo/i_bytes.adligo.org
-clone git@github.com:adligo/i_collections.adligo.org
-clone git@github.com:adligo/i_ctx.adligo.org
-clone git@github.com:adligo/i_ctx4jse.adligo.org
-clone git@github.com:adligo/i_pipe.adligo.org
-clone git@github.com:adligo/i_tests4j.adligo.org
-clone git@github.com:adligo/i_threads.adligo.org
-clone git@github.com:adligo/i_threads4jse.adligo.org
+clone i_bytes.adligo.org
+clone i_collections.adligo.org
+clone i_ctx.adligo.org
+clone i_ctx4jse.adligo.org
+clone i_pipe.adligo.org
+clone i_tests4j.adligo.org
+clone i_threads.adligo.org
+clone i_threads4jse.adligo.org
 
-clone git@github.com:adligo/mockito_ext.adligo.org
+clone mockito_ext.adligo.org
 
-clone git@github.com:adligo/pipe.adligo.org
-clone git@github.com:adligo/pipe_tests.adligo.org
+clone pipe.adligo.org
+clone pipe_tests.adligo.org
 
-clone git@github.com:adligo/ten.adligo.org
-clone git@github.com:adligo/ten_gwt_examples.adligo.org
-clone git@github.com:adligo/ten_tests.adligo.org
+clone ten.adligo.org
+clone ten_gwt_examples.adligo.org
+clone ten_tests.adligo.org
 
-clone git@github.com:adligo/tests4j.adligo.org
-clone git@github.com:adligo/tests4j_4mockito.adligo.org
-clone git@github.com:adligo/tests4j4jj.adligo.org
-clone git@github.com:adligo/tests4j4jj_tests.adligo.org
-clone git@github.com:adligo/threads.adligo.org
+clone tests4j.adligo.org
+clone tests4j_4mockito.adligo.org
+clone tests4j4jj.adligo.org
+clone tests4j4jj_tests.adligo.org
+clone threads.adligo.org
 
 wait
