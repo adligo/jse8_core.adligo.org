@@ -44,16 +44,18 @@ done
 
 function clone() {
   if [[ "$async" == "y" ]]; then
-    clone_async $1 &
+    clone_fun $1 &
   else 
-    git clone $1 
+    clone_fun $1 
   fi
 }
 
-function clone_async() {
+function clone_fun() {
   #echo "cloning $1 async"
   git clone $1
   #echo "finished clone of $1"
+  cd $1
+  git checkout jse8
 }
 clone git@github.com:adligo/artifactory_deploy.sh.adligo.org.git
 
