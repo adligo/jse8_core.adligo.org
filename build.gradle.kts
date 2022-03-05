@@ -1,5 +1,11 @@
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
+
+import org.adligo.kt.jse.core.build.I_CtxDeps
+import org.adligo.kt.jse.core.build.I_Ctx4JseDeps
+import org.adligo.kt.jse.core.build.I_GradleCallback
+
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.Project
 
@@ -88,7 +94,7 @@ fun dependsOnCollections(dhs: DependencyHandlerScope) {
 }
 
 fun dependsOnCtx(dhs: DependencyHandlerScope) {
-   dependsOnI_Ctx4Jse(dhs)
+   I_Ctx4JseDeps.dependsOnI_Ctx4Jse( GradleBuildCallback(dhs))
    dependsOnI_Threads4jse(dhs)
    dhs.implementation(project("ctx.adligo.org"))
 }
@@ -104,12 +110,6 @@ fun dependsOnI_Bytes(dhs: DependencyHandlerScope) {
 
 fun dependsOnI_Collections(dhs: DependencyHandlerScope) {
    dhs.implementation(project("i_collections.adligo.org"))
-}
-
-
-fun dependsOnI_Ctx4Jse(dhs: DependencyHandlerScope) {
-  I_CtxDeps.dependsOnI_Ctx(GradleBuildCallback(dhs))
-  dhs.implementation(project("i_ctx4jse.adligo.org"))
 }
 
 fun dependsOnI_Pipe(dhs: DependencyHandlerScope) {
@@ -271,7 +271,7 @@ project(":collections_tests.adligo.org") {
 project(":ctx.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Ctx4Jse(this)
+    I_Ctx4JseDeps.dependsOnI_Ctx4Jse( GradleBuildCallback(this))
     dependsOnI_Threads4jse(this)
   }
   eclipse { 
