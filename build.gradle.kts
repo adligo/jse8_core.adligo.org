@@ -1,11 +1,16 @@
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import org.gradle.plugins.ide.eclipse.model.Container
+import org.gradle.api.artifacts.Dependency
+import org.gradle.api.Project
 
+import org.gradle.plugins.ide.eclipse.model.Container
 import org.gradle.plugins.ide.eclipse.model.Classpath
 import org.gradle.plugins.ide.eclipse.model.EclipseModel
 import org.gradle.plugins.ide.eclipse.model.ProjectDependency
 
+println("this is " + this)
+println("entry is \n" + this.toString())
+println("${this::class.qualifiedName}") 
 /**
  * This is a new fangled way to build Java using Kotlin :)
  * 
@@ -46,9 +51,25 @@ plugins {
   //allPlugins(this);
   eclipse
   java
+  `kotlin-dsl`
 }
 
 dependencies {
+}
+
+class GradleBuildCallback(val dhs: DependencyHandlerScope) : I_GradleCallback {
+  override fun implementation(dependencyNotation: String) {
+    dhs.implementation(dependencyNotation)
+  }
+  override fun implementation(dependency: Dependency) {
+    dhs.implementation(dependency)
+  }
+  override fun implementation(project: Project) {
+    dhs.implementation(project)
+  }
+  override fun projectFun(projectName: String): Project {
+    return project(projectName)
+  }
 }
 
 java {
@@ -85,13 +106,10 @@ fun dependsOnI_Collections(dhs: DependencyHandlerScope) {
    dhs.implementation(project("i_collections.adligo.org"))
 }
 
-fun dependsOnI_Ctx(dhs: DependencyHandlerScope) {
-   dhs.implementation(project("i_ctx.adligo.org"))
-}
 
 fun dependsOnI_Ctx4Jse(dhs: DependencyHandlerScope) {
-   dependsOnI_Ctx(dhs)
-   dhs.implementation(project("i_ctx4jse.adligo.org"))
+  I_CtxDeps.dependsOnI_Ctx(GradleBuildCallback(dhs))
+  dhs.implementation(project("i_ctx4jse.adligo.org"))
 }
 
 fun dependsOnI_Pipe(dhs: DependencyHandlerScope) {
@@ -325,7 +343,7 @@ project(":i_bytes.adligo.org") {
 project(":i_ctx4jse.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Ctx(this)
+    I_CtxDeps.dependsOnI_Ctx(GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)

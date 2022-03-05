@@ -43,22 +43,40 @@ while (( "$#" )); do
 done
 
 function clone() {
-  if [[ "$async" == "y" ]]; then
-    clone_fun $1 &
+  echo "in clone function with $1 $2"
+  if [[ -d $1 ]]; then
+    echo "$1 already exists :)"
   else 
-    clone_fun $1 
+    if [[ "$async" == "y" ]]; then
+      if [[ -z $2 || "" == "$2" ]]; then
+        clone_fun $1  &
+      else
+        clone_fun $1 $2 &
+      fi
+    else 
+      if [[ -z $2 || "" == "$2" ]]; then
+        clone_fun $1 
+      else
+        clone_fun $1 $2
+      fi
+    fi
   fi
 }
 
 function clone_fun() {
-  #echo "cloning $1 async"
-  git clone git@github.com:adligo/$1.git
+  echo "cloning $1 $2 async"
+  if [[ -z $2 || "" == "$2" ]]; then
+    git clone git@github.com:adligo/$1.git
+  else
+    git clone git@github.com:adligo/$1.git $2
+  fi
   #echo "finished clone of $1"
   cd $1
   git checkout jse8
 }
 clone artifactory_deploy.sh.adligo.org
 
+clone buildSrc.jse.core.kt.adligo.org buildSrc
 clone bytes.adligo.org
 clone bytes_gwt_examples.adligo.org
 clone bytes_tests.adligo.org

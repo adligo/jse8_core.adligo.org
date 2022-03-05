@@ -1,6 +1,8 @@
 # Compiled class file
 
 build
+buildSrc
+buildSrcOld
 *.class
 .classpath
 .gradle
