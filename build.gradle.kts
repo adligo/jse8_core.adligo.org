@@ -1,10 +1,15 @@
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+import org.adligo.kt.jse.core.build.GwtDeps
 
+import org.adligo.kt.jse.core.build.I_BytesDeps
+import org.adligo.kt.jse.core.build.I_CollectionsDeps
 import org.adligo.kt.jse.core.build.I_CtxDeps
 import org.adligo.kt.jse.core.build.I_Ctx4JseDeps
 import org.adligo.kt.jse.core.build.I_GradleCallback
+import org.adligo.kt.jse.core.build.I_ThreadsDeps
+import org.adligo.kt.jse.core.build.I_Threads4JseDeps
 
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.Project
@@ -84,45 +89,23 @@ java {
   }
 }
 fun dependsOnBytes(dhs: DependencyHandlerScope) {
-  dependsOnI_Bytes(dhs)
+  I_BytesDeps.dependsOnI_Bytes( GradleBuildCallback(dhs))
   dhs.implementation(project("bytes.adligo.org"))
 }
  
 fun dependsOnCollections(dhs: DependencyHandlerScope) {
-   dependsOnI_Collections(dhs)
+   I_CollectionsDeps.dependsOnI_Collections( GradleBuildCallback(dhs))
    dhs.implementation(project("collections.adligo.org"))
 }
 
 fun dependsOnCtx(dhs: DependencyHandlerScope) {
    I_Ctx4JseDeps.dependsOnI_Ctx4Jse( GradleBuildCallback(dhs))
-   dependsOnI_Threads4jse(dhs)
+   I_Threads4JseDeps.dependsOnI_Threads4Jse( GradleBuildCallback(dhs))
    dhs.implementation(project("ctx.adligo.org"))
-}
-
-fun dependsOnGwt(dhs: DependencyHandlerScope) {
-  dhs.implementation("com.google.gwt:gwt-user:2.9.0")
-  dhs.implementation("com.google.gwt:gwt-dev:2.9.0")
-}
-
-fun dependsOnI_Bytes(dhs: DependencyHandlerScope) {
-   dhs.implementation(project("i_bytes.adligo.org"))
-}
-
-fun dependsOnI_Collections(dhs: DependencyHandlerScope) {
-   dhs.implementation(project("i_collections.adligo.org"))
 }
 
 fun dependsOnI_Pipe(dhs: DependencyHandlerScope) {
   dhs.implementation(project("i_pipe.adligo.org"))
-}
-
-fun dependsOnI_Threads(dhs: DependencyHandlerScope) {
-  dhs.implementation(project("i_threads.adligo.org"))
-}
-
-fun dependsOnI_Threads4jse(dhs: DependencyHandlerScope) {
-  dependsOnI_Threads(dhs)
-  dhs.implementation(project("i_threads4jse.adligo.org"))
 }
 
 fun dependsOnI_Tests4j(dhs: DependencyHandlerScope) {
@@ -202,7 +185,7 @@ fun testSrc(ssc: SourceSetContainer) {
 project(":bytes.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Bytes(this)
+    I_BytesDeps.dependsOnI_Bytes( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -216,7 +199,7 @@ project(":bytes_gwt_examples.adligo.org") {
   allPlugins(this)
   dependencies {
     dependsOnBytes(this)
-    dependsOnGwt(this)
+    GwtDeps.dependsOnGwt( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -243,7 +226,7 @@ project(":bytes_tests.adligo.org") {
 project(":collections.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Collections(this)
+    I_CollectionsDeps.dependsOnI_Collections( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -272,7 +255,7 @@ project(":ctx.adligo.org") {
   allPlugins(this)
   dependencies {
     I_Ctx4JseDeps.dependsOnI_Ctx4Jse( GradleBuildCallback(this))
-    dependsOnI_Threads4jse(this)
+    I_Threads4JseDeps.dependsOnI_Threads4Jse( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -286,7 +269,7 @@ project(":ctx_gwt_examples.adligo.org") {
   allPlugins(this)
   dependencies {
     dependsOnCtx(this)
-    dependsOnGwt(this)
+    GwtDeps.dependsOnGwt( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -343,18 +326,8 @@ project(":i_bytes.adligo.org") {
 project(":i_ctx4jse.adligo.org") {
   allPlugins(this)
   dependencies {
-    I_CtxDeps.dependsOnI_Ctx(GradleBuildCallback(this))
+    I_Ctx4JseDeps.has(GradleBuildCallback(this))
   }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
-}
-
-project(":i_ctx4jse.adligo.org") {
-  allPlugins(this)
   eclipse { 
     onEclipse(this)
   }
@@ -396,7 +369,7 @@ project(":i_threads.adligo.org") {
 project(":i_threads4jse.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Threads(this)
+    I_Threads4JseDeps.has( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -462,7 +435,7 @@ project(":ten_gwt_examples.adligo.org") {
   allPlugins(this)
   dependencies {
     dependsOnTen(this)
-    dependsOnGwt(this)
+    GwtDeps.dependsOnGwt( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -547,7 +520,7 @@ project(":tests4j_4mockito.adligo.org") {
 project(":threads.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Threads4jse(this) 
+    I_Threads4JseDeps.dependsOnI_Threads4Jse( GradleBuildCallback(this)) 
   }
   eclipse { 
     onEclipse(this)
