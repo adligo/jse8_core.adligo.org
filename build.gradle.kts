@@ -3,13 +3,22 @@ import java.time.format.DateTimeFormatter
 
 import org.adligo.kt.jse.core.build.GwtDeps
 
+import org.adligo.kt.jse.core.build.BytesDeps
+import org.adligo.kt.jse.core.build.CollectionsDeps
+import org.adligo.kt.jse.core.build.CtxDeps
 import org.adligo.kt.jse.core.build.I_BytesDeps
 import org.adligo.kt.jse.core.build.I_CollectionsDeps
 import org.adligo.kt.jse.core.build.I_CtxDeps
 import org.adligo.kt.jse.core.build.I_Ctx4JseDeps
 import org.adligo.kt.jse.core.build.I_GradleCallback
+import org.adligo.kt.jse.core.build.I_PipeDeps
+import org.adligo.kt.jse.core.build.I_Tests4jDeps
 import org.adligo.kt.jse.core.build.I_ThreadsDeps
 import org.adligo.kt.jse.core.build.I_Threads4JseDeps
+import org.adligo.kt.jse.core.build.JUnit5Deps
+import org.adligo.kt.jse.core.build.MockitoDeps
+import org.adligo.kt.jse.core.build.MockitoExtDeps
+import org.adligo.kt.jse.core.build.Tests4j4jjDeps
 
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.Project
@@ -88,67 +97,23 @@ java {
     languageVersion.set(JavaLanguageVersion.of(8))
   }
 }
-fun dependsOnBytes(dhs: DependencyHandlerScope) {
-  I_BytesDeps.dependsOnI_Bytes( GradleBuildCallback(dhs))
-  dhs.implementation(project("bytes.adligo.org"))
-}
- 
-fun dependsOnCollections(dhs: DependencyHandlerScope) {
-   I_CollectionsDeps.dependsOnI_Collections( GradleBuildCallback(dhs))
-   dhs.implementation(project("collections.adligo.org"))
-}
-
-fun dependsOnCtx(dhs: DependencyHandlerScope) {
-   I_Ctx4JseDeps.dependsOnI_Ctx4Jse( GradleBuildCallback(dhs))
-   I_Threads4JseDeps.dependsOnI_Threads4Jse( GradleBuildCallback(dhs))
-   dhs.implementation(project("ctx.adligo.org"))
-}
-
-fun dependsOnI_Pipe(dhs: DependencyHandlerScope) {
-  dhs.implementation(project("i_pipe.adligo.org"))
-}
-
-fun dependsOnI_Tests4j(dhs: DependencyHandlerScope) {
-  dhs.implementation(project("i_tests4j.adligo.org"))
-}
 
 fun dependsOnJaxb(dhs: DependencyHandlerScope) {
   dhs.implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359") 
 }
 
 fun dependsOnTen(dhs: DependencyHandlerScope) {
-  dependsOnBytes(dhs)
+  BytesDeps.dependsOnBytes( GradleBuildCallback(dhs))
   dhs.implementation(project("ten.adligo.org"))
 }
 
-fun dependsOnTests4j4jj(dhs: DependencyHandlerScope) {
-  dependsOnI_Tests4j(dhs)
-  dependsOnJUnit5(dhs)
-  dependsOnMockitoExt(dhs)
-  dhs.implementation(project("tests4j4jj.adligo.org"))
-}
-
-fun dependsOnJUnit5(dhs: DependencyHandlerScope) {
-  dhs.implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-  dhs.implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
-}
-
-fun dependsOnMockito(dhs: DependencyHandlerScope) {
-   dhs.implementation("org.mockito:mockito-all:1.10.19")
-}
-
-fun dependsOnMockitoExt(dhs: DependencyHandlerScope) {
-   dependsOnMockito(dhs)
-   dhs.implementation(project(":mockito_ext.adligo.org"))
-}
-
 fun dependsOnPipe(dhs: DependencyHandlerScope) {
-   dependsOnI_Pipe(dhs)
+   I_PipeDeps.dependsOnI_Pipe( GradleBuildCallback(dhs))
    dhs.implementation(project("pipe.adligo.org"))
 }
 
 fun dependsOnTests4j(dhs: DependencyHandlerScope) {
-  dependsOnI_Tests4j(dhs)
+  I_Tests4jDeps.dependsOnI_Tests4j( GradleBuildCallback(dhs))
   dependsOnJaxb(dhs)
   dhs.implementation(project("tests4j.adligo.org"))
 }
@@ -185,7 +150,7 @@ fun testSrc(ssc: SourceSetContainer) {
 project(":bytes.adligo.org") {
   allPlugins(this)
   dependencies {
-    I_BytesDeps.dependsOnI_Bytes( GradleBuildCallback(this))
+    BytesDeps.has( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -198,7 +163,7 @@ project(":bytes.adligo.org") {
 project(":bytes_gwt_examples.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnBytes(this)
+    BytesDeps.dependsOnBytes( GradleBuildCallback(this))
     GwtDeps.dependsOnGwt( GradleBuildCallback(this))
   }
   eclipse { 
@@ -212,8 +177,7 @@ project(":bytes_gwt_examples.adligo.org") {
 project(":bytes_tests.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnBytes(this)
-    dependsOnTests4j4jj(this)
+    BytesDeps.testsHave( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -226,7 +190,7 @@ project(":bytes_tests.adligo.org") {
 project(":collections.adligo.org") {
   allPlugins(this)
   dependencies {
-    I_CollectionsDeps.dependsOnI_Collections( GradleBuildCallback(this))
+    CollectionsDeps.has( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -239,9 +203,7 @@ project(":collections.adligo.org") {
 project(":collections_tests.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnCollections(this)
-    dependsOnCtx(this)
-    dependsOnTests4j4jj(this)
+    CollectionsDeps.testsHave( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -254,8 +216,7 @@ project(":collections_tests.adligo.org") {
 project(":ctx.adligo.org") {
   allPlugins(this)
   dependencies {
-    I_Ctx4JseDeps.dependsOnI_Ctx4Jse( GradleBuildCallback(this))
-    I_Threads4JseDeps.dependsOnI_Threads4Jse( GradleBuildCallback(this))
+    CtxDeps.has( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -268,7 +229,7 @@ project(":ctx.adligo.org") {
 project(":ctx_gwt_examples.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnCtx(this)
+    CtxDeps.dependsOnCtx( GradleBuildCallback(this))
     GwtDeps.dependsOnGwt( GradleBuildCallback(this))
   }
   eclipse { 
@@ -282,8 +243,7 @@ project(":ctx_gwt_examples.adligo.org") {
 project(":ctx_tests.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnCtx(this)
-    dependsOnTests4j4jj(this)
+    CtxDeps.testsHave( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -381,7 +341,7 @@ project(":i_threads4jse.adligo.org") {
 project(":mockito_ext.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnMockito(this)
+    MockitoExtDeps.has( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -394,7 +354,7 @@ project(":mockito_ext.adligo.org") {
 project(":pipe.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Pipe(this)
+    I_PipeDeps.dependsOnI_Pipe( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -421,7 +381,7 @@ project(":pipe_tests.adligo.org") {
 project(":ten.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnBytes(this)
+    BytesDeps.dependsOnBytes( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -449,7 +409,7 @@ project(":ten_tests.adligo.org") {
   allPlugins(this)
   dependencies {
     dependsOnTen(this)
-    dependsOnTests4j4jj(this)
+    Tests4j4jjDeps.dependsOnTests4j4jj( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -462,7 +422,7 @@ project(":ten_tests.adligo.org") {
 project(":tests4j.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Tests4j(this)
+    I_Tests4jDeps.dependsOnI_Tests4j( GradleBuildCallback(this))
     dependsOnJaxb(this)
   }
   eclipse { 
@@ -476,9 +436,7 @@ project(":tests4j.adligo.org") {
 project(":tests4j4jj.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnI_Tests4j(this)
-    dependsOnJUnit5(this)
-    dependsOnMockitoExt(this)
+    Tests4j4jjDeps.has( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -491,7 +449,7 @@ project(":tests4j4jj.adligo.org") {
 project(":tests4j4jj_tests.adligo.org") {
   allPlugins(this)
   dependencies {
-    dependsOnTests4j4jj(this)
+    Tests4j4jjDeps.testsHave( GradleBuildCallback(this))
   }
   eclipse { 
     onEclipse(this)
@@ -506,7 +464,7 @@ project(":tests4j_4mockito.adligo.org") {
   dependencies {
     dependsOnTests4j(this) 
     //an old version of Mockito that uses jdk 1.5 byte code for Apache Beam
-    implementation("org.mockito:mockito-all:1.10.19")
+    MockitoDeps.dependsOnMockito( GradleBuildCallback(this))
     implementation(project(":tests4j.adligo.org"))
   }
   eclipse { 
@@ -543,7 +501,3 @@ is the one that is included in the Eclipse BuildPath
 tasks.register<GradleBuild>("ecp") {
     tasks = listOf("cleanEclipseClasspath", "eclipseClasspath")
 }
-
-
-
-
