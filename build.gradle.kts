@@ -1,11 +1,14 @@
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+import java.util.function.Consumer
+
 import org.adligo.kt.jse.core.build.GwtDeps
 
 import org.adligo.kt.jse.core.build.BytesDeps
 import org.adligo.kt.jse.core.build.CollectionsDeps
 import org.adligo.kt.jse.core.build.CtxDeps
+import org.adligo.kt.jse.core.build.JaxbDeps
 import org.adligo.kt.jse.core.build.I_BytesDeps
 import org.adligo.kt.jse.core.build.I_CollectionsDeps
 import org.adligo.kt.jse.core.build.I_CtxDeps
@@ -18,7 +21,11 @@ import org.adligo.kt.jse.core.build.I_Threads4JseDeps
 import org.adligo.kt.jse.core.build.JUnit5Deps
 import org.adligo.kt.jse.core.build.MockitoDeps
 import org.adligo.kt.jse.core.build.MockitoExtDeps
+import org.adligo.kt.jse.core.build.TenDeps
+import org.adligo.kt.jse.core.build.Tests4jDeps
+import org.adligo.kt.jse.core.build.Tests4j_4MockitoDeps
 import org.adligo.kt.jse.core.build.Tests4j4jjDeps
+import org.adligo.kt.jse.core.build.ThreadsDeps
 
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.Project
@@ -74,9 +81,6 @@ plugins {
   `kotlin-dsl`
 }
 
-dependencies {
-}
-
 class GradleBuildCallback(val dhs: DependencyHandlerScope) : I_GradleCallback {
   override fun implementation(dependencyNotation: String) {
     dhs.implementation(dependencyNotation)
@@ -96,26 +100,6 @@ java {
   toolchain {
     languageVersion.set(JavaLanguageVersion.of(8))
   }
-}
-
-fun dependsOnJaxb(dhs: DependencyHandlerScope) {
-  dhs.implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359") 
-}
-
-fun dependsOnTen(dhs: DependencyHandlerScope) {
-  BytesDeps.dependsOnBytes( GradleBuildCallback(dhs))
-  dhs.implementation(project("ten.adligo.org"))
-}
-
-fun dependsOnPipe(dhs: DependencyHandlerScope) {
-   I_PipeDeps.dependsOnI_Pipe( GradleBuildCallback(dhs))
-   dhs.implementation(project("pipe.adligo.org"))
-}
-
-fun dependsOnTests4j(dhs: DependencyHandlerScope) {
-  I_Tests4jDeps.dependsOnI_Tests4j( GradleBuildCallback(dhs))
-  dependsOnJaxb(dhs)
-  dhs.implementation(project("tests4j.adligo.org"))
 }
 
 fun javaSrc(ssc: SourceSetContainer) {
@@ -143,349 +127,187 @@ fun onEclipseClasspathMerged(classpath: Classpath) {
   //println("${classpath.entries::class.qualifiedName}")  
 }
 
+fun projectTemplate(p: Project, cgc : Consumer<I_GradleCallback>) {
+  allPlugins(p)
+  //println("in project template with p " + p)
+  p.dependencies {
+    //println("in project template dependencies with this " + this)
+    cgc.accept( GradleBuildCallback(this) )
+    //println("called cgc ? " + cgc)
+  }
+  p.eclipse { 
+    onEclipse(this)
+  }
+  p.repositories {
+    allRepos(this)
+  }
+
+}
+
 fun testSrc(ssc: SourceSetContainer) {
   ssc.test { java { srcDirs("src") } }
 }
 
 project(":bytes.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    BytesDeps.has( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc ->
+      BytesDeps.has(gc) 
+  })
 }
 
 project(":bytes_gwt_examples.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    BytesDeps.dependsOnBytes( GradleBuildCallback(this))
-    GwtDeps.dependsOnGwt( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc ->
+      BytesDeps.gwtExamplesHave(gc) 
+  })
 }
 
 project(":bytes_tests.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    BytesDeps.testsHave( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc ->
+      BytesDeps.testsHave(gc) 
+  })
 }
 
 project(":collections.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    CollectionsDeps.has( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc ->
+      CollectionsDeps.has(gc) 
+  })
 }
 
 project(":collections_tests.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    CollectionsDeps.testsHave( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc ->
+      CollectionsDeps.testsHave(gc) 
+  })
 }
 
 project(":ctx.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    CtxDeps.has( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc ->
+      CtxDeps.has(gc) 
+  })
 }
 
 project(":ctx_gwt_examples.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    CtxDeps.dependsOnCtx( GradleBuildCallback(this))
-    GwtDeps.dependsOnGwt( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc ->
+      CtxDeps.gwtExamplesHave(gc) 
+  })
 }
 
 project(":ctx_tests.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    CtxDeps.testsHave( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc ->
+      CtxDeps.testsHave(gc) 
+  })
 }
 
 project(":i_collections.adligo.org") {
-  allPlugins(this)
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     //do nothing
+  })
 }
 
 project(":i_ctx.adligo.org") {
-  allPlugins(this)
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     //do nothing
+  })
 }
 
 project(":i_bytes.adligo.org") {
-  allPlugins(this)
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     //do nothing
+  })
 }
 
 project(":i_ctx4jse.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    I_Ctx4JseDeps.has(GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     I_Ctx4JseDeps.has(gc)
+  })
 }
 
 project(":i_pipe.adligo.org") {
-  allPlugins(this)
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+    projectTemplate(this, { gc -> 
+     //do nothing
+  })
 }
 
 project(":i_tests4j.adligo.org") {
-  allPlugins(this)
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     //do nothing
+  })
 }
 
 project(":i_threads.adligo.org") {
-  allPlugins(this)
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     //do nothing
+  })
 }
 
 project(":i_threads4jse.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    I_Threads4JseDeps.has( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     I_Threads4JseDeps.has( gc)
+  })
 }
 project(":mockito_ext.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    MockitoExtDeps.has( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     MockitoExtDeps.has( gc)
+  })
 }
 
 project(":pipe.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    I_PipeDeps.dependsOnI_Pipe( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     I_PipeDeps.dependsOnI_Pipe( gc)
+  })
 }
 
 project(":pipe_tests.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    dependsOnPipe(this)
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     //do nothing
+  })
 }
 
 
 project(":ten.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    BytesDeps.dependsOnBytes( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     TenDeps.has(gc)
+  })
 }
 
 project(":ten_gwt_examples.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    dependsOnTen(this)
-    GwtDeps.dependsOnGwt( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     TenDeps.gwtExamplesHave(gc)
+  })
 }
 
 project(":ten_tests.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    dependsOnTen(this)
-    Tests4j4jjDeps.dependsOnTests4j4jj( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     TenDeps.testsHave(gc)
+  })
 }
 
 project(":tests4j.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    I_Tests4jDeps.dependsOnI_Tests4j( GradleBuildCallback(this))
-    dependsOnJaxb(this)
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     Tests4jDeps.has(gc)
+  })
 }
 
 project(":tests4j4jj.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    Tests4j4jjDeps.has( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     Tests4j4jjDeps.has(gc)
+  })
 }
 
 project(":tests4j4jj_tests.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    Tests4j4jjDeps.testsHave( GradleBuildCallback(this))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     Tests4j4jjDeps.testsHave(gc)
+  })
 }
 
 project(":tests4j_4mockito.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    dependsOnTests4j(this) 
-    //an old version of Mockito that uses jdk 1.5 byte code for Apache Beam
-    MockitoDeps.dependsOnMockito( GradleBuildCallback(this))
-    implementation(project(":tests4j.adligo.org"))
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     Tests4j_4MockitoDeps.has(gc)
+  })
 }
 
 project(":threads.adligo.org") {
-  allPlugins(this)
-  dependencies {
-    I_Threads4JseDeps.dependsOnI_Threads4Jse( GradleBuildCallback(this)) 
-  }
-  eclipse { 
-    onEclipse(this)
-  }
-  repositories {
-    allRepos(this)
-  }
+  projectTemplate(this, { gc -> 
+     ThreadsDeps.has(gc)
+  })
 }
 
 repositories {
