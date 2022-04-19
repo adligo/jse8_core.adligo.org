@@ -21,6 +21,7 @@ import org.adligo.kt.jse.core.build.I_Threads4JseDeps
 import org.adligo.kt.jse.core.build.JUnit5Deps
 import org.adligo.kt.jse.core.build.MockitoDeps
 import org.adligo.kt.jse.core.build.MockitoExtDeps
+import org.adligo.kt.jse.core.build.PipeDeps
 import org.adligo.kt.jse.core.build.TenDeps
 import org.adligo.kt.jse.core.build.Tests4jDeps
 import org.adligo.kt.jse.core.build.Tests4j_4MockitoDeps
@@ -251,13 +252,14 @@ project(":mockito_ext.adligo.org") {
 
 project(":pipe.adligo.org") {
   projectTemplate(this, { gc -> 
-     I_PipeDeps.dependsOnI_Pipe( gc)
+     PipeDeps.has( gc)
   })
 }
 
 project(":pipe_tests.adligo.org") {
   projectTemplate(this, { gc -> 
      //do nothing
+     PipeDeps.testsHave(gc)
   })
 }
 
