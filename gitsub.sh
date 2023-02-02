@@ -27,9 +27,11 @@
 #
 
 # Thanks https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
+odir=`pwd`
 while (( "$#" )); do
   case "$1" in
     -a | --async)   async="y" ; shift 1  ;;
+    -d | --dir) dir="$2" ; shift 2 ;;
     -h | --help) help="y" ; shift 1 ;;
     -*|--*=) # unsupported flags
       echo "Error: Unsupported flag $1" >&2
@@ -41,9 +43,18 @@ while (( "$#" )); do
       ;;
   esac
 done
+if [[ -z $dir || "" == "$dir" ]]; then
+  dir=$odir
+else
+  cd $dir
+  dir=`pwd`
+fi
+echo checking out into $dir
 
 function clone() {
+  cd $dir
   echo "in clone function with $1 $2"
+  echo "in $dir"
   if [[ -d $1 ]]; then
     echo "$1 already exists :)"
   else 
@@ -66,6 +77,7 @@ function clone() {
 function clone_fun() {
   echo "cloning $1 $2 async"
   if [[ -z $2 || "" == "$2" ]]; then
+    echo git clone git@github.com:adligo/$1.git    
     git clone git@github.com:adligo/$1.git
   else
     git clone git@github.com:adligo/$1.git $2
