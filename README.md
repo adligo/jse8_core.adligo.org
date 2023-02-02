@@ -8,6 +8,9 @@ Then download the other sub projects;
 - cd jse8-core.adligo.org
 - ./gitsub.sh
 
+Alternatively to check out faster async structure.
+- ./gitsub.sh -a 
+
 Finally build it with Java (I'm on 11) and Gradle (I'm on 7.3.3)
 - gradle build --parallel
 - ./moveTestXmlFiles.sh
