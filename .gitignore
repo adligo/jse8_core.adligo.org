@@ -40,6 +40,7 @@ bytes.adligo.org
 bytes_gwt_examples.adligo.org
 bytes_tests.adligo.org
 
+cmn.adligo.org
 collections.adligo.org
 collections_tests.adligo.org
 collections_gwt_examples.adligo.org
@@ -66,9 +67,9 @@ mockito_ext.adligo.org
 pipe.adligo.org
 pipe_tests.adligo.org
 
-ten.adligo.org
-ten_gwt_examples.adligo.org
-ten_tests.adligo.org
+ten64.adligo.org
+ten64_gwt_examples.adligo.org
+ten64_tests.adligo.org
 
 tests4j.adligo.org
 tests4j_4mockito.adligo.org

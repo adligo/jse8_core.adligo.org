@@ -108,7 +108,7 @@ clone pipe.adligo.org
 clone pipe_tests.adligo.org
 
 clone ten64.adligo.org
-#clone ten64_gwt_examples.adligo.org
+clone ten64_gwt_examples.adligo.org
 clone ten64_tests.adligo.org
 
 clone tests4j.adligo.org
