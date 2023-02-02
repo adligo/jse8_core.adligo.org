@@ -81,6 +81,7 @@ clone bytes.adligo.org
 clone bytes_gwt_examples.adligo.org
 clone bytes_tests.adligo.org
 
+clone cmn.adligo.org
 clone collections.adligo.org
 clone collections_gwt_examples.adligo.org
 clone collections_tests.adligo.org
@@ -106,9 +107,9 @@ clone mockito_ext.adligo.org
 clone pipe.adligo.org
 clone pipe_tests.adligo.org
 
-clone ten.adligo.org
-clone ten_gwt_examples.adligo.org
-clone ten_tests.adligo.org
+clone ten64.adligo.org
+#clone ten64_gwt_examples.adligo.org
+clone ten64_tests.adligo.org
 
 clone tests4j.adligo.org
 clone tests4j_4mockito.adligo.org
