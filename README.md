@@ -36,6 +36,8 @@ Both Builds consist of two simple steps;
 if [ -d "depot" ]; then
   rm -fr depot
 fi
+export PATH=$PATH:/var/opt/gradle-7.6.1/bin
+export GRADLE_HOME=/var/opt/gradle-7.6.1
 mkdir depot
 mkdir depot/tests
 mkdir $BUILD_NUMBER
@@ -49,6 +51,8 @@ gradle build --parallel
 
 ## Single Threaded Build Execute Shell Stell
 ```
+export PATH=$PATH:/var/opt/gradle-7.6.1/bin
+export GRADLE_HOME=/var/opt/gradle-7.6.1
 mkdir $BUILD_NUMBER
 cd  $BUILD_NUMBER
 git clone https://github.com/adligo/jse8_core.adligo.org.git
