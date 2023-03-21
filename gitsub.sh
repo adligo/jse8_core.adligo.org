@@ -28,6 +28,7 @@
 
 # Thanks https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
 odir=`pwd`
+help="n"
 while (( "$#" )); do
   case "$1" in
     -a | --async)   async="y" ; shift 1  ;;
