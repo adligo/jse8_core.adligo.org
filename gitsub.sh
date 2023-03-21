@@ -33,6 +33,7 @@ while (( "$#" )); do
     -a | --async)   async="y" ; shift 1  ;;
     -d | --dir) dir="$2" ; shift 2 ;;
     -h | --help) help="y" ; shift 1 ;;
+    -s | --https) https="y" ; shift 1 ;;
     -*|--*=) # unsupported flags
       echo "Error: Unsupported flag $1" >&2
       exit 1
@@ -43,6 +44,21 @@ while (( "$#" )); do
       ;;
   esac
 done
+
+
+if [[ -z $help || "y" == $help ]]; then
+  echo This script clones sub the projects
+  printf " -a or --async "
+  printf "\n\t\tuses an asynchronous bash process to do the cloning"
+  printf "\n -d or --dir "
+  printf "\n\t\tuses a specific specified directory to clone into "
+  printf "\n -h or --help "
+  printf "\n\t\tprints this text "
+  printf "\n -s or --https "
+  printf "\n\t\tuses https instead of ssh the default "
+  exit
+fi
+
 if [[ -z $dir || "" == "$dir" ]]; then
   dir=$odir
 else
@@ -77,15 +93,24 @@ function clone() {
 function clone_fun() {
   echo "cloning $1 $2 async"
   if [[ -z $2 || "" == "$2" ]]; then
-    echo git clone git@github.com:adligo/$1.git    
-    git clone git@github.com:adligo/$1.git
+    if [[ -z $https || "" == "$https" ]]; then
+	  echo git clone git@github.com:adligo/$1.git
+	  git clone git@github.com:adligo/$1.git
+    else
+	  echo git clone https://github.com/adligo/$1.git
+	  git clone https://github.com/adligo/$1.git
+	fi
   else
-    git clone git@github.com:adligo/$1.git $2
+    if [[ -z $https || "" == "$https" ]]; then
+      git clone git@github.com:adligo/$1.git $2
+    else
+      git clone https://github.com/adligo/$1.git $2
+    fi
   fi
-  #echo "finished clone of $1"
-  cd $1
+  #echo "finished clone of $1 staying on main branch"
   git checkout jse8
 }
+
 clone artifactory_deploy.sh.adligo.org
 
 clone buildSrc.jse.core.kt.adligo.org buildSrc

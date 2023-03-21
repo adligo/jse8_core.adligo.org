@@ -33,7 +33,7 @@ Both Builds consist of two simple steps;
 
 ## Parallel Build Execute Shell Step
 ```
-if [[ -d "depot" ]]; then
+if [ -d "depot" ]; then
   rm -fr depot
 fi
 mkdir depot
