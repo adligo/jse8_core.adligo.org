@@ -68,10 +68,23 @@ else
 fi
 echo checking out into $dir
 
+function branch() {
+  cd $1
+  status=0
+  git checkout jse8
+  status=?$
+  if [[ $status == 0 ]]; then
+     echo "Successfully checked out branch jse on $1"
+  else
+     echo "Failed to check out branch jse8 on $1 with status $status"
+  fi
+}
+
 function clone() {
   cd $dir
   echo "in clone function with $1 $2"
   echo "in $dir"
+  
   if [[ -d $1 ]]; then
     echo "$1 already exists :)"
   else 
@@ -100,23 +113,15 @@ function clone_fun() {
     else
 	  echo git clone https://github.com/adligo/$1.git
 	  git clone https://github.com/adligo/$1.git
-	fi
+    fi
+    branch $1
   else
     if [[ -z $https || "" == "$https" ]]; then
       git clone git@github.com:adligo/$1.git $2
     else
       git clone https://github.com/adligo/$1.git $2
     fi
-  fi
-  #echo "finished clone of $1 staying on main branch"
-  cd $2
-  status=0
-  git checkout jse8
-  status=?$
-  if [[ $status == 0 ]]; then
-     echo "Successfully checked out branch jse on $1"
-  else
-     echo "Failed to check out branch jse8 on $1"
+    branch $2
   fi
 }
 
