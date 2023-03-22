@@ -114,9 +114,9 @@ function clone_fun() {
   git checkout jse8
   status=?$
   if [[ $status == 0 ]]; then
-     echo "Successfully checked out branch jse on $2"
-  elif
-     echo "Failed to check out branch jse8 on $2"
+     echo "Successfully checked out branch jse on $1"
+  else
+     echo "Failed to check out branch jse8 on $1"
   fi
 }
 
