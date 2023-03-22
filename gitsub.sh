@@ -73,7 +73,7 @@ function branch() {
   cd $1
   status=0
   git checkout jse8
-  status=?$
+  status=$?
   if [[ $status == 0 ]]; then
      echo "Successfully checked out branch jse on $1"
   else
