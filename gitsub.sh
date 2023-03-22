@@ -109,7 +109,15 @@ function clone_fun() {
     fi
   fi
   #echo "finished clone of $1 staying on main branch"
+  cd $2
+  status=0
   git checkout jse8
+  status=?$
+  if [[ $status == 0 ]]; then
+     echo "Successfully checked out branch jse on $2"
+  elif
+     echo "Failed to check out branch jse8 on $2"
+  fi
 }
 
 clone artifactory_deploy.sh.adligo.org
