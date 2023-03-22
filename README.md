@@ -3,17 +3,22 @@
 ## To use this project from a Mac, GitBash or Linux;
 - git clone git@github.com:adligo/jse8_core.adligo.org.git
 
-Then you will need to upload a ssh key to github
-Then download the other sub projects;
+Then you MAY upload a ssh key to github
+Then download the other sub projects with either ssl the default;
 - cd jse8_core.adligo.org
 - ./gitsub.sh
+Or using https
+- ./gitsub.sh -s
 
-Alternatively to check out faster async structure.
-- ./gitsub.sh -a -s
+Alternatively to check out faster with the async structure.
+- ./gitsub.sh -a 
 
-Finally build it with Java (I'm on 11) and Gradle (I'm on 7.3.3)
+Finally build it with Java (I'm on 11) and Gradle (I'm on 7.6.1)
 - gradle build --parallel
 - ./moveTestXmlFiles.sh
+
+You can use this docker image if you want a copy of the entire working build server;
+- adligo/jenkis_jdk11_gradle7.6.1:2023-03-21
 
 For a single threaded build with specific versions
 - ./build.sh
