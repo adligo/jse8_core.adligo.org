@@ -68,6 +68,7 @@ else
 fi
 echo checking out into $dir
 
+
 function branch() {
   cd $1
   status=0
