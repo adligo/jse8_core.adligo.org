@@ -19,6 +19,7 @@ Finally build it with Java (I'm on 11) and Gradle (I'm on 7.6.1)
 
 You can use this docker image if you want a copy of the entire working build server;
 - adligo/jenkis_jdk11_gradle7.6.1:2023-03-21
+- install it and add the JUnit plugin
 - https://github.com/adligo/jse8_core.adligo.org/blob/main/jdk1.8_build.png
 
 For a single threaded build with specific versions
